@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>World Pharmacist Day E-Greeting</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #eceff1;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .container {
+    display: flex;
+    gap: 20px;
+    max-width: 1300px;
+    width: 100%;
+  }
+  .form-section {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .form-section input, .form-section select {
+    width: 100%;
+    margin: 6px 0 14px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  .preview-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .greet-card {
+    width: 560px;
+    height: 830px;
+    background: rgba(255,255,255,0.85);
+    border: 6px solid #4b0082;
+    border-radius: 18px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    padding: 15px;
+    box-sizing: border-box;
+    transition: background 0.3s ease;
+  }
+  .greet-card .bg-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.15;
+    z-index: 0;
+  }
+  .greet-card > * { position: relative; z-index: 1; }
+
+  .heading {
+    font-size: 46px;
+    font-weight: bold;
+    margin: 0;
+    color: #2c003e;
+    position: relative;
+  }
+  .heading .big {
+    font-size: 100px;
+    font-weight: 900;
+    font-style: italic;
+    color: #8b0000;
+  }
+  .heading .th {
+    font-size: 32px;
+    vertical-align: super;
+    margin-left: 2px;
+  }
+  .heading .month {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 58px;
+    color: #1a237e;
+  }
+  .title {
+    font-size: 42px;
+    font-weight: bold;
+    font-style: italic;
+    margin: 5px 0 15px;
+    color: #1a237e;
+  }
+  .pharmacist-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 14px auto;
+    display: block;
+  }
+  .pharmacist-name {
+    font-size: 34px;
+    font-weight: bold;
+    font-family: 'Brush Script MT', cursive;
+    color: #2e003e;
+    margin: 8px 0;
+  }
+  .medical-name {
+    font-size: 32px;
+    font-family: 'Brush Script MT', cursive;
+    font-weight: 600;
+    color: #00695c;
+    margin-bottom: 14px;
+  }
+  .wish-message {
+    font-size: 22px;
+    font-family: 'Brush Script MT', cursive;
+    color: #4a148c;
+    margin: 12px 0;
+    padding: 0 10px;
+  }
+  .brand-photo {
+    max-height: 90px;
+    object-fit: contain;
+    width: 100%;
+    margin: 16px 0 12px;
+  }
+  .bottom-info {
+    font-size: 16px;
+    margin-top: 5px;
+    padding-top: 6px;
+    border-top: 1px solid #ccc;
+  }
+  .bottom-info .row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .bottom-info .company {
+    font-weight: 600;
+    font-size: 26px;
+    font-family: 'Brush Script MT', cursive;
+    color: #002366; /* deep blue */
+  }
+  button {
+    margin-top: 15px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #4b0082;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:hover { background: #311b92; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="form-section">
+    <h2>Customize E-Greeting</h2>
+    <label>Pharmacist Name:</label>
+    <input type="text" id="pharmacistName" oninput="updateCard()" placeholder="Enter Pharmacist Name">
+
+    <label>Medical Name:</label>
+    <input type="text" id="medicalName" oninput="updateCard()" placeholder="Enter Medical Name">
+
+    <label>Pharmacist Photo (Gallery Upload):</label>
+    <input type="file" id="pharmacistPhoto" accept="image/*" onchange="previewImage(event,'pharmacistImg')">
+
+    <label>Brand Reminder Photo:</label>
+    <input type="file" id="brandPhoto" accept="image/*" onchange="previewImage(event,'brandImg')">
+
+    <label>Background Photo:</label>
+    <input type="file" id="bgPhoto" accept="image/*" onchange="previewImage(event,'bgImg')">
+
+    <label>Background Color Theme:</label>
+    <select id="bgColor" onchange="updateBackground()">
+      <option value="rgba(255,255,255,0.85)">White</option>
+      <option value="rgba(255,182,193,0.85)">Pink</option>
+      <option value="rgba(144,238,144,0.85)">Green</option>
+      <option value="rgba(221,160,221,0.85)">Purple</option>
+      <option value="rgba(255,255,224,0.85)">Yellow</option>
+      <option value="linear-gradient(135deg, rgba(255,182,193,0.8), rgba(221,160,221,0.8), rgba(173,216,230,0.8))">Multicolor Gradient</option>
+    </select>
+
+    <label>MR Name:</label>
+    <input type="text" id="mrName" oninput="updateCard()" placeholder="Enter MR Name">
+
+    <label>Contact:</label>
+    <input type="text" id="contact" oninput="updateCard()" placeholder="Enter Contact">
+
+    <label>Company Name:</label>
+    <input type="text" id="companyName" oninput="updateCard()" placeholder="Enter Company Name">
+
+    <label>Language for Wish:</label>
+    <select id="language" onchange="updateCard()">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="mr">Marathi</option>
+      <option value="gu">Gujarati</option>
+    </select>
+
+    <button onclick="downloadCard()">Download Greeting</button>
+  </div>
+
+  <div class="preview-section">
+    <div class="greet-card" id="greetCard">
+      <img id="bgImg" class="bg-img" src="" alt="Background">
+      <div>
+        <h1 class="heading"><span class="big">25</span><sup class="th">th</sup><span class="month"> September</span></h1>
+        <h2 class="title">World Pharmacist Day</h2>
+      </div>
+      <img id="pharmacistImg" class="pharmacist-photo" src="" alt="Pharmacist Photo">
+      <div class="pharmacist-name" id="pharmacistNamePreview">Pharmacist Name</div>
+      <div class="medical-name" id="medicalNamePreview">Medical Name</div>
+      <div class="wish-message" id="wishMessage">
+        With deep gratitude for your dedication, compassion, and tireless service to humanity – Happy World Pharmacist Day!
+      </div>
+      <img id="brandImg" class="brand-photo" src="" alt="Brand Reminder">
+      <div class="bottom-info">
+        <div class="row">
+          <span id="mrNamePreview">MR Name</span>
+          <span id="contactPreview">Contact</span>
+        </div>
+        <div class="company" id="companyNamePreview">Company Name</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const wishes = {
+  en: "With deep gratitude for your dedication, compassion, and tireless service to humanity – Happy World Pharmacist Day!",
+  hi: "मानवता के प्रति आपकी निष्ठा, करुणा और अथक सेवा के लिए हार्दिक आभार। विश्व फार्मासिस्ट दिवस की शुभकामनाएँ!",
+  mr: "मानवतेसाठी तुमच्या समर्पण, करुणा आणि अखंड सेवेसाठी मनःपूर्वक आभार. जागतिक फार्मासिस्ट दिनाच्या शुभेच्छा!",
+  gu: "માનવતા પ્રત્યે આપના સમર્પણ, કરુણા અને અવિરત સેવાના માટે હૃદયપૂર્વક આભાર. વિશ્વ ફાર્માસિસ્ટ દિવસની શુભકામનાઓ!"
+};
+
+function updateCard() {
+  document.getElementById('pharmacistNamePreview').innerText = document.getElementById('pharmacistName').value || 'Pharmacist Name';
+  document.getElementById('medicalNamePreview').innerText = document.getElementById('medicalName').value || 'Medical Name';
+  document.getElementById('mrNamePreview').innerText = document.getElementById('mrName').value || 'MR Name';
+  document.getElementById('contactPreview').innerText = document.getElementById('contact').value || 'Contact';
+  document.getElementById('companyNamePreview').innerText = document.getElementById('companyName').value || 'Company Name';
+  const lang = document.getElementById('language').value;
+  document.getElementById('wishMessage').innerText = wishes[lang];
+}
+
+function updateBackground() {
+  document.getElementById("greetCard").style.background = document.getElementById("bgColor").value;
+}
+
+function previewImage(event, targetId) {
+  const reader = new FileReader();
+  reader.onload = function(){ document.getElementById(targetId).src = reader.result; }
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+function downloadCard() {
+  html2canvas(document.querySelector("#greetCard"), {useCORS: true, scale: 2}).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "PharmacistDay_Greeting.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+</script>
+</body>
+</html>
